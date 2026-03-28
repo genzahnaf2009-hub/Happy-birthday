@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy 16th Birthday Hafsaa ✨💫🫶</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<style>
+body {
+  background: linear-gradient(135deg,#18121f,#241a33,#2f2344,#3c2d52);
+  background-size:400% 400%;
+  animation:bgMove 35s ease infinite;
+  font-family:'Helvetica Neue',sans-serif;
+  overflow-x:hidden;
+}
+@keyframes bgMove {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
+
+.spotlight{position:absolute;width:400px;height:400px;background:radial-gradient(circle,rgba(255,255,255,0.08),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.card{background:rgba(255,255,255,0.06);backdrop-filter:blur(28px) saturate(110%);border:1px solid rgba(255,255,255,0.12);box-shadow:0 20px 60px rgba(0,0,0,0.4),inset 0 0 10px rgba(255,255,255,0.05);}
+.musicPulse{animation:musicPulse 2s ease-in-out infinite;}
+@keyframes musicPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.02);}}
+.glow{text-shadow:0 0 6px rgba(220,200,255,0.25),0 0 12px rgba(180,150,220,0.2);}
+.cake{font-size:80px;cursor:pointer;transition:0.4s;} .cake:hover{transform:scale(1.1);}
+.cut{animation:cutCake 0.8s forwards;} @keyframes cutCake{50%{transform:scale(1.2) rotate(-6deg);}100%{transform:scale(0.9) rotate(6deg);opacity:0;}}
+#finalMsg{opacity:0;transition:1.5s;} #finalMsg.show{opacity:1;}
+.star{position:absolute;width:2px;height:2px;background:rgba(255,255,255,0.6);border-radius:50%;animation:twinkle 3s infinite;} @keyframes twinkle{50%{opacity:0.8;}}
+.btn{background:linear-gradient(135deg,#a855f7,#c084fc);transition:0.3s;} .btn:hover{transform:scale(1.08);box-shadow:0 0 20px #c084fc;}
+.floating{position:absolute;animation:floatUp 7s linear infinite, sway 4s infinite;opacity:0.9;font-size:1.8rem;transform-origin:center center;pointer-events:none;}
+@keyframes floatUp{0%{transform:translateY(100vh) scale(0.8) rotate(0deg);opacity:0;}20%{opacity:1;}100%{transform:translateY(-10vh) scale(1.2) rotate(30deg);opacity:0;}}
+@keyframes sway{0%{transform:rotate(0deg);}50%{transform:rotate(5deg);}100%{transform:rotate(0deg);}}
+</style>
+</head>
+<body onclick="tapEmojis(event)" class="flex items-center justify-center min-h-screen text-white">
+<div class="spotlight"></div>
+<audio id="music" loop><source src="https://cdn.pixabay.com/audio/2022/03/15/audio_6c6c1fbc8c.mp3"></audio>
+
+<div id="lock" class="text-center">
+  <h1 class="text-3xl mb-4 glow">🎉 Hafsaa’s Birthday Countdown ✨</h1>
+  <p id="countdown" class="text-xl mb-4 glow"></p>
+  <h1 class="text-3xl mb-4 glow">🔐 Enter Secret Code ✨</h1>
+  <input id="pass" type="password" class="p-2 rounded text-black text-center" disabled>
+  <br><br>
+  <button onclick="unlock()" class="btn px-6 py-2 rounded-xl" disabled>Unlock 🫶</button>
+</div>
+
+<div id="main" class="hidden card p-8 max-w-md text-center musicPulse">
+<h1 class="text-4xl glow mb-2">Hafsaa ✨💫🫶</h1>
+<p class="mb-4">🎂 Happy 16th Birthday 🎂</p>
+<div class="gift text-6xl cursor-pointer" onclick="gift()">🎁</div>
+<div id="cakeBox" class="hidden mt-4"><div id="cake" class="cake" onclick="cutCake()">🎂</div></div>
+<p id="typedText" class="mt-6 text-sm"></p>
+<button onclick="letter()" class="mt-6 px-6 py-3 rounded-xl btn">Open Letter 💌</button>
+</div>
+
+<div id="popup" class="hidden fixed inset-0 bg-black/60 flex items-center justify-center">
+<div class="card p-6 text-center max-w-sm">
+<p>✨ You are the most special person in my life 💫🫶<br>Thank you for existing 💖<br>I hope you keep shining ✨<br>Just know that you are the reason for someone to smile everyday</p>
+<br>
+<button onclick="closeLetter()" class="btn px-4 py-2 rounded">Close</button>
+</div>
+</div>
+
+<div id="finalMsg" class="fixed inset-0 flex items-center justify-center text-center text-xl">💖 You mean more than words can ever explain ✨</div>
+
+<script>
+const birthday=new Date('April 4, 2026 00:00:00').getTime();
+const countdownEl=document.getElementById('countdown');
+const passInput=document.getElementById('pass');
+const unlockBtn=document.querySelector('#lock button');
+const message=`✨ All the best wishes to the cutest and sweetest creature known to mankind 💫🫶.`;
+
+function startCountdown(){
+  function updateCountdown(){
+    const now=new Date().getTime();
+    const distance=birthday-now;
+    if(distance<=0){
+      countdownEl.innerHTML="🎂 It's Hafsaa’s Birthday! 🎂"; 
+      passInput.disabled=false; unlockBtn.disabled=false; 
+      clearInterval(interval); 
+      return;
+    }
+    const days=Math.floor(distance/(1000*60*60*24));
+    const hours=Math.floor((distance%(1000*60*60*24))/(1000*60*60));
+    const minutes=Math.floor((distance%(1000*60*60))/(1000*60));
+    const seconds=Math.floor((distance%(1000*60))/1000);
+    countdownEl.innerHTML=`⏳ ${days}d ${hours}h ${minutes}m ${seconds}s until Hafsaa’s Birthday`;
+  }
+  updateCountdown();
+  const interval=setInterval(updateCountdown,1000);
+}
+startCountdown();
+
+function typeWriter(){ let i=0; function type(){ if(i<message.length){ document.getElementById("typedText").innerHTML+=message[i]; i++; setTimeout(type,25);} } type(); }
+
+function unlock(){ if(passInput.value==="ILYH4/4/10"){
+  document.getElementById("lock").style.display="none"; main.classList.remove("hidden"); 
+  music.play().catch(()=>{}); typeWriter(); startStars(); startFloatingEmojis(true); 
+  setTimeout(()=>{document.getElementById("finalMsg").classList.add("show");},30000);} 
+  else alert("Wrong code 💔"); 
+}
+
+function gift(){ confetti({particleCount:150,spread:120}); document.getElementById("cakeBox").classList.remove("hidden"); }
+function cutCake(){ let c=document.getElementById("cake"); c.classList.add("cut"); confetti({particleCount:400,spread:180}); setTimeout(()=>{ c.innerText="🍰"; c.classList.remove("cut"); },800);}
+function letter(){ popup.classList.remove("hidden"); } function closeLetter(){ popup.classList.add("hidden");}
+function hearts(e){ let h=document.createElement("div"); h.innerText="💖"; h.style.position="absolute"; h.style.left=e.clientX+"px"; h.style.top=e.clientY+"px"; document.body.appendChild(h); setTimeout(()=>h.remove(),1000);}
+function startStars(){ for(let i=0;i<60;i++){ let s=document.createElement("div"); s.className="star"; s.style.top=Math.random()*100+"vh"; s.style.left=Math.random()*100+"vw"; document.body.appendChild(s); } }
+
+function startFloatingEmojis(tapEnabled=true){
+  setInterval(()=>{ createFloatingElement(tapEnabled); },400);
+}
+
+function createFloatingElement(tap=false,x=0,y=0){
+  const emojis=["🌸","💜","💖","🌺","🌷","🌙","⭐"];
+  const f=document.createElement("div");
+  f.className="floating";
+  f.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+  if(tap){ f.style.left=x+"px"; f.style.top=y+"px"; } else { f.style.left=Math.random()*100+"vw"; f.style.top=Math.random()*90+"vh"; }
+  f.style.animationDuration=(5+Math.random()*4)+"s";
+  f.style.transform=`rotate(${Math.random()*360}deg) scale(${0.8+Math.random()*0.4})`;
+  document.body.appendChild(f);
+  setTimeout(()=>f.remove(),7000);
+}
+
+function tapEmojis(e){
+  const now=new Date().getTime();
+  if(now<birthday){ createFloatingElement(true,e.clientX,e.clientY); }
+}
+</script>
+</body>
+</html>
